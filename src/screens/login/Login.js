@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './Login.css';
 import Home from '../../screens/home/Home';
-import Profile from '../../screens/profile/Profile';
 import Header from '../../common/header/Header';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,7 +11,8 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+
 
 
 
@@ -26,8 +26,8 @@ class Login extends Component {
             usernameRequired: "dispNone",
             passwordRequired: "dispNone",
             username: "",
-            password: "",
-            loggedIn: sessionStorage.getItem("access-token") == null ? false : true
+            password: ""
+           
         }
         
     }
@@ -45,7 +45,12 @@ class Login extends Component {
         
             if (this.state.username === mockUsernameInstagram && this.state.password === mockPasswordInstagram) {
                 window.sessionStorage.setItem("access-token", accessToken);
-                ReactDOM.render(<Home />, document.getElementById('root'));
+                //this is the history object where the push method available in the history object is used 
+                // to redirecting the user to the Home page when a user logins successfully.
+                this.props.history.push('/home')
+        
+               ReactDOM.render(<Home />, document.getElementById('root'));
+            
             }
             
         
@@ -54,6 +59,7 @@ class Login extends Component {
             this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
             this.state.username !== mockUsernameInstagram || this.state.password !== mockPasswordInstagram  ? this.setState({ usernamePasswordIncorrect:"dispBlock" }) :
         this.setState({ usernamePasswordIncorrect:"dispNone" });
+        
     }
             
             
@@ -70,14 +76,8 @@ class Login extends Component {
 
 
             <div>
-                <Router>
-                    <div className="main-container">
-                    
-                        <Route path='/home' render={(props) => <Home {...props} />} />
-                        <Route path='/profile' render={(props) => <Profile {...props} />} />
-                    </div>
-                </Router>
-                <Header />
+                
+                <Header  />
                 <div className="cardStyle">
 
                     <Card >

@@ -3,6 +3,15 @@ import './Header.css';
 
 
 class Header extends Component {
+
+constructor(){
+    super();
+   // loggedIn: sessionStorage.getItem("access-token") == null ? false : true
+}
+
+
+
+
     render() {
         return (
             <header className='app-header'>

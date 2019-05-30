@@ -34,7 +34,7 @@ class Profile extends Component {
         render() {
             return (
                 <div>
-                    <Header />
+                <Header  />
                     <span className="spanStyle">Profile Page</span>
                 </div>
             )

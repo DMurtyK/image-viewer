@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Login from '../src/screens/login/Login';
+import Controller from '../src/screens/Controller';
 
-
-ReactDOM.render(<Login/>, document.getElementById('root'));
+//Here the controller.js file is used for routing to different pages.<Controller> replaced  <Home />.
+ReactDOM.render(<Controller/>, document.getElementById('root'));
