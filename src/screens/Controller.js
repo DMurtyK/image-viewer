@@ -53,7 +53,7 @@ class Controller extends Component {
                
                     
                    
-                    <Route path='/profile/' render={(props) => <Profile {...props} baseUrl={this.baseUrl} />} />
+                    <PrivateRoute path='/profile/' render={(props) => <Profile {...props} baseUrl={this.baseUrl} />} />
                     <Route exact path='/' render={(props) => <Login {...props} baseUrl={this.baseUrl} />} />
                     <PrivateRoute component={Home} path="/home/" exact />
                     
