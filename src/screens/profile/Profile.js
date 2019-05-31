@@ -35,7 +35,7 @@ class Profile extends Component {
             return (
                 <div>
                 <Header  />
-                    <span className="spanStyle">Profile Page</span>
+                    <span className="spanStyle">Profile test Page</span>
                 </div>
             )
         }

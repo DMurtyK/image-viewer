@@ -27,6 +27,7 @@ class Login extends Component {
             passwordRequired: "dispNone",
             username: "",
             password: ""
+            
            
         }
         
@@ -51,6 +52,12 @@ class Login extends Component {
         
                ReactDOM.render(<Home />, document.getElementById('root'));
             
+            }
+            else{
+              
+                window.sessionStorage.removeItem("access-token");
+                
+
             }
             
         
