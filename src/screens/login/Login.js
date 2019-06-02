@@ -53,12 +53,12 @@ class Login extends Component {
                ReactDOM.render(<Home />, document.getElementById('root'));
             
             }
-            else{
+             else{
               
-                window.sessionStorage.removeItem("access-token");
+                 window.sessionStorage.removeItem("access-token");
                 
 
-            }
+             }
             
         
             

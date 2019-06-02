@@ -2,3 +2,20 @@
 .spanStyle {
     color:red;
 }
+.likeText {
+    font-size: 30px;
+    
+ 
+    
+    align-items: center;
+}
+
+.black {
+    color:none;
+    cursor: pointer;
+}
+
+.red{
+    color:red; 
+}
+   

@@ -1,9 +1,73 @@
-import React, { Component } from 'react';
-//import Profile from '../../screens/profile/Profile';
-import './Home.css';
-import Header from '../../common/header/Header';
-//import {BrowserRouter as Router, Route} from 'react-router-dom';
 
+import React, { Component } from 'react';
+import './Home.css';
+import Typography from '@material-ui/core/Typography';
+import Input from '@material-ui/core/Input';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
+import Header from '../../common/header/Header';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import hearticon from '../../assets/icon/hearticon.svg';
+import Icon from '@material-ui/core/Icon';
+import SvgIcon from '@material-ui/core/SvgIcon';
+
+
+
+
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    card: {
+        maxWidth: '100%',
+        margin: '8px',
+        shadow: '20px',
+    },
+    bigAvatar: {
+        margin: 10,
+        width: 60,
+        height: 60,
+    },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    input: {
+        display: 'none',
+    },
+    gridListMain: {
+        transform: 'translateZ(0)',
+        cursor: 'pointer',
+        
+        },
+    
+});
+
+const styleForHeart = {
+    'width': '60px',
+    'height': '60px'
+  };
+  
+
+function HeartIcon(props) {
+    return (
+      <SvgIcon {...props}>
+        <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" />
+      </SvgIcon>
+    );
+  }
 class Home extends Component {
 
     constructor() {
@@ -12,39 +76,181 @@ class Home extends Component {
             unixDateTimestamp: [],
             ownerInfo: [],
             mediaInfo: [],
-            isHeartIconSelected :false
+            isHeartIconSelected :false,
+            imagecomment:"",
+            addComment:"dispComment",
+            heartIcon:[{
+                id: 1,
+                stateId: "star1",
+                color: "black",
+                changeColor:"red"
+             } ],
+             black: true,            
+
+                
+           //state variable for the icon  
+            count: 0,
             
-
         }
+        //this.iconClickHandler = this.iconClickHandler.bind(this);
+           
     }
-        componentWillMount(){
-            let data = null;
-            let xhr = new XMLHttpRequest();
-            let that = this;
-        
-            xhr.addEventListener("readystatechange",function(){
-                if(this.readyState === 4){
-                   
-                        console.log(JSON.parse(this.responseText));
-    
-                    
-                }
 
-            })
-            xhr.open("GET",this.props.baseUrl + "?access_token=13521022383.d5e23ae.c9785a17269b494eb996c2cbc490a6f3");
-          //  xhr.setRequestHeader("Cache-Control","no-cache");
-            xhr.send(data);
-        }
+    changeColor(){
+        this.setState({black: !this.state.black})
+     }
+
+    /* Event  Handler Functions Definitions */
+
+    imageCommentOnChangeChangeHandler = (e) => {
+        this.setState({imagecomment: e.target.value});
+    }
+
+   addCommentOnClickHandler = (e) => {
+        this.setState({addedComment :this.state.imagecomment});
+       
+}
+  
+//this is the handler for increasing number of like counts
+        heartIconClickHandler = () => {
+        this.setState(prevState => {
+           return {count: prevState.count + 1}
+        })
+
+
+    }
+
+    /*Code written to make two API calls as per the definitions provided in problem statement */
+
+    componentWillMount() {
+
+        // Get owner info after authenticating the  accessToken generated 
+        let ownerData = null;
+        let xhr = new XMLHttpRequest();
+        let that = this;
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                //console.log(this.responseText);
+                that.setState({
+                    ownerInfo: JSON.parse(this.responseText).data
+
+                });
+            }
+        })
+        xhr.open("GET", this.props.baseUrl + "?access_token=13521022383.d5e23ae.c9785a17269b494eb996c2cbc490a6f3");
+        xhr.send(ownerData);
+
+        // Get media info of owner after authenticated by accessToken
+        let mediaData = null;
+        let xhrMediaData = new XMLHttpRequest();
+
+        xhrMediaData.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                that.setState({
+                    mediaInfo: JSON.parse(this.responseText).data
+                    //unixDateTimestamp :JSON.parse(this.responseText).data.created_time
+                    
+                });
+            }
+        })
+        xhrMediaData.open("GET", this.props.baseUrl + "media/recent/?access_token=13521022383.d5e23ae.c9785a17269b494eb996c2cbc490a6f3");
+        xhrMediaData.send(mediaData);
+       
+    }
+
+    /* Rendering JSX elements on the Login Page as per the design requirements */
+
+    /* Inside CARD CONTENT */
+    /* display hash tags and comments only if there are any IMP */
+    /* Caption.text must be displayed */
+    /* hash Tags  colour should be correct and multiple tags must be seperated by space*/
+
+
+  
     
     render() {
-        return (	    
+        
+        const {classes} = this.props;
+        let btn_class = this.state.black ? "black" : "red";
+
+        return (
             <div>
+            <Header  />
             
-            <Header baseUrl={this.props.baseUrl} />
-            Home Page 
+                <div className= "cardStyle">
+                    <br />
+                    <GridList cellHeight={"auto"} className={classes.gridListMain} cols={2}>
+                        {this.state.mediaInfo.map(image => (
+
+                            <GridListTile key={"image" + image.id} cols={image.cols || 1}>
+                                <Grid container className={classes.root} spacing={16}>
+                                    <Grid item>
+                                    <Card className={classes.card}>
+
+                                        <CardHeader 
+                                            avatar={
+                                                <Avatar className={classes.bigAvatar}>
+                                                    <img src={image.user.profile_picture} alt={"logo"} /></Avatar>
+                                            }
+                                            title={image.user.username}
+                                            subheader={image.created_time} />
+
+
+                                        <CardContent>
+                                            <img src={image.images.standard_resolution.url} alt={image.text} className="image-properties" />
+                                            <hr />
+                                            <Typography>{image.text}</Typography>
+                                            <Typography><div className="hash-tags">#{image.tags}</div></Typography>
+                                            <div className="likesFont">
+                                                <Typography  className = "likeText" variant="h5" > 
+                                                  
+                                                   <HeartIcon   style = {styleForHeart}   onClick = {this.heartIconClickHandler}/>
+                                                  {image.likes.count+this.state.count} Likes                       
+
+                                                  </Typography>
+                                             </div>  
+                                             <br /><br />
+                                               
+                                               
+
+                
+                                                 
+                                           
+                                                
+                                            
+ 
+                                               
+                                            <FormControl >
+                                            <FormHelperText className={this.state.addComment}><div><Typography>: {this.state.addedComment}</Typography></div></FormHelperText>
+                                            </FormControl>
+                                            <br/>
+                                            <br/>
+                                            <FormControl>
+                                                <InputLabel htmlFor="imagecomment">Add a Comment</InputLabel>
+                                                <Input id="imagecomment" type="text" onChange={this.imageCommentOnChangeChangeHandler} />
+                                                </FormControl>
+                                            <Button id="addedcomment" variant="contained" color="primary" onClick={this.addCommentOnClickHandler}>ADD</Button>
+                                        </CardContent>
+
+                                    </Card>
+                                    
+                                    </Grid>
+                                    </Grid>
+                        </GridListTile>
+                         ))};
+                         
+                    </GridList>
+
+                </div>
+
             </div>
+
         )
     }
 }
 
-export default Home;
+export default withStyles(styles)(Home);
+
+
+
